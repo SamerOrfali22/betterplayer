@@ -34,13 +34,11 @@ class LibUtil {
   static String excludeWhiteSpace(String string) =>
       string.split('').where((it) => !isWhitespace(it.codeUnitAt(0))).join();
 
-  static bool isLineBreak(int codeUnit) =>
-      (codeUnit == '\n'.codeUnitAt(0)) || (codeUnit == '\r'.codeUnitAt(0));
+  static bool isLineBreak(int codeUnit) => (codeUnit == '\n'.codeUnitAt(0)) || (codeUnit == '\r'.codeUnitAt(0));
 
   static String? getCodecsOfType(String? codecs, int trackType) {
-    final output = Util.splitCodecs(codecs)
-        .where((codec) => trackType == MimeTypes.getTrackTypeOfCodec(codec))
-        .join(',');
+    final output =
+        Util.splitCodecs(codecs).where((codec) => trackType == MimeTypes.getTrackTypeOfCodec(codec)).join(',');
     return output.isEmpty ? null : output;
   }
 
@@ -59,19 +57,13 @@ class LibUtil {
     } else if (match.group(9) == 'Z' || match.group(9) == 'z') {
       timezoneShift = 0;
     } else {
-      timezoneShift =
-          int.parse(match.group(12)!) * 60 + int.parse(match.group(13)!);
+      timezoneShift = int.parse(match.group(12)!) * 60 + int.parse(match.group(13)!);
       if ('-' == match.group(11)) timezoneShift *= -1;
     }
 
     //todo UTCではなくGMT?
-    final DateTime dateTime = DateTime.utc(
-        int.parse(match.group(1)!),
-        int.parse(match.group(2)!),
-        int.parse(match.group(3)!),
-        int.parse(match.group(4)!),
-        int.parse(match.group(5)!),
-        int.parse(match.group(6)!));
+    final DateTime dateTime = DateTime.utc(int.parse(match.group(1)!), int.parse(match.group(2)!),
+        int.parse(match.group(3)!), int.parse(match.group(4)!), int.parse(match.group(5)!), int.parse(match.group(6)!));
     if (match.group(8)?.isNotEmpty == true) {
       //todo ここ実装再検討
     }
@@ -84,8 +76,7 @@ class LibUtil {
     return time;
   }
 
-  static int msToUs(int timeMs) =>
-      (timeMs == Util.timeEndOfSource) ? timeMs : (timeMs * 1000);
+  static int msToUs(int timeMs) => (timeMs == Util.timeEndOfSource) ? timeMs : (timeMs * 1000);
 }
 
 class Util {
@@ -123,9 +114,8 @@ class Util {
 
   static const int timeEndOfSource = 0;
 
-  static List<String> splitCodecs(String? codecs) => codecs?.isNotEmpty != true
-      ? <String>[]
-      : codecs!.trim().split(RegExp('(\\s*,\\s*)'));
+  static List<String> splitCodecs(String? codecs) =>
+      codecs?.isNotEmpty != true ? <String>[] : codecs!.trim().split(RegExp('(\\s*,\\s*)'));
 
   static bool checkBitPositionIsSet(int number, int bitPosition) {
     if ((number & (1 << (bitPosition - 1))) > 0) {

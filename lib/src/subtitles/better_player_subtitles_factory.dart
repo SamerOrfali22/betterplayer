@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
+
 import 'better_player_subtitle.dart';
 
 class BetterPlayerSubtitlesFactory {
-  static Future<List<BetterPlayerSubtitle>> parseSubtitles(
-      BetterPlayerSubtitlesSource source) async {
+  static Future<List<BetterPlayerSubtitle>> parseSubtitles(BetterPlayerSubtitlesSource source) async {
     switch (source.type) {
       case BetterPlayerSubtitlesSourceType.file:
         return _parseSubtitlesFromFile(source);
@@ -19,8 +20,7 @@ class BetterPlayerSubtitlesFactory {
     }
   }
 
-  static Future<List<BetterPlayerSubtitle>> _parseSubtitlesFromFile(
-      BetterPlayerSubtitlesSource source) async {
+  static Future<List<BetterPlayerSubtitle>> _parseSubtitlesFromFile(BetterPlayerSubtitlesSource source) async {
     try {
       final List<BetterPlayerSubtitle> subtitles = [];
       for (final String? url in source.urls!) {
@@ -40,8 +40,7 @@ class BetterPlayerSubtitlesFactory {
     return [];
   }
 
-  static Future<List<BetterPlayerSubtitle>> _parseSubtitlesFromNetwork(
-      BetterPlayerSubtitlesSource source) async {
+  static Future<List<BetterPlayerSubtitle>> _parseSubtitlesFromNetwork(BetterPlayerSubtitlesSource source) async {
     try {
       final client = HttpClient();
       final List<BetterPlayerSubtitle> subtitles = [];
@@ -63,14 +62,12 @@ class BetterPlayerSubtitlesFactory {
       BetterPlayerUtils.log("Parsed total subtitles: ${subtitles.length}");
       return subtitles;
     } catch (exception) {
-      BetterPlayerUtils.log(
-          "Failed to read subtitles from network: $exception");
+      BetterPlayerUtils.log("Failed to read subtitles from network: $exception");
     }
     return [];
   }
 
-  static List<BetterPlayerSubtitle> _parseSubtitlesFromMemory(
-      BetterPlayerSubtitlesSource source) {
+  static List<BetterPlayerSubtitle> _parseSubtitlesFromMemory(BetterPlayerSubtitlesSource source) {
     try {
       return _parseString(source.content!);
     } catch (exception) {
@@ -98,9 +95,7 @@ class BetterPlayerSubtitlesFactory {
         continue;
       }
       final subtitle = BetterPlayerSubtitle(component, isWebVTT);
-      if (subtitle.start != null &&
-          subtitle.end != null &&
-          subtitle.texts != null) {
+      if (subtitle.start != null && subtitle.end != null && subtitle.texts != null) {
         subtitlesObj.add(subtitle);
       }
     }

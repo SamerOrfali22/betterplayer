@@ -21,10 +21,5 @@ class BetterPlayerDrmConfiguration {
   final Map<String, String>? headers;
 
   BetterPlayerDrmConfiguration(
-      {this.drmType,
-      this.token,
-      this.licenseUrl,
-      this.certificateUrl,
-      this.headers,
-      this.clearKey});
+      {this.drmType, this.token, this.licenseUrl, this.certificateUrl, this.headers, this.clearKey});
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:better_player/better_player.dart';
 
 ///Controller used to manage playlist player.
@@ -27,10 +28,8 @@ class BetterPlayerPlaylistController {
   BetterPlayerPlaylistController(
     this._betterPlayerDataSourceList, {
     this.betterPlayerConfiguration = const BetterPlayerConfiguration(),
-    this.betterPlayerPlaylistConfiguration =
-        const BetterPlayerPlaylistConfiguration(),
-  }) : assert(_betterPlayerDataSourceList.isNotEmpty,
-            "Better Player data source list can't be empty") {
+    this.betterPlayerPlaylistConfiguration = const BetterPlayerPlaylistConfiguration(),
+  }) : assert(_betterPlayerDataSourceList.isNotEmpty, "Better Player data source list can't be empty") {
     _setup();
   }
 
@@ -49,8 +48,7 @@ class BetterPlayerPlaylistController {
     _currentDataSourceIndex = initialStartIndex;
     setupDataSource(_currentDataSourceIndex);
     _betterPlayerController!.addEventsListener(_handleEvent);
-    _nextVideoTimeStreamSubscription =
-        _betterPlayerController!.nextVideoTimeStream.listen((time) {
+    _nextVideoTimeStreamSubscription = _betterPlayerController!.nextVideoTimeStream.listen((time) {
       if (time != null && time == 0) {
         _onVideoChange();
       }
@@ -88,8 +86,7 @@ class BetterPlayerPlaylistController {
   ///Handle BetterPlayerEvent from BetterPlayerController. Used to control
   ///startup of next video timer.
   void _handleEvent(BetterPlayerEvent betterPlayerEvent) {
-    if (betterPlayerEvent.betterPlayerEventType ==
-        BetterPlayerEventType.finished) {
+    if (betterPlayerEvent.betterPlayerEventType == BetterPlayerEventType.finished) {
       if (_getNextDataSourceIndex() != -1) {
         _betterPlayerController!.startNextVideoTimer();
       }
@@ -105,8 +102,7 @@ class BetterPlayerPlaylistController {
         "list - 1");
     if (index <= _dataSourceLength) {
       _currentDataSourceIndex = index;
-      _betterPlayerController!
-          .setupDataSource(_betterPlayerDataSourceList[index]);
+      _betterPlayerController!.setupDataSource(_betterPlayerDataSourceList[index]);
     }
   }
 

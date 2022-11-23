@@ -43,9 +43,8 @@ class HlsMediaPlaylist extends HlsPlaylist {
     required List<String> tags,
     required bool hasIndependentSegments,
   }) {
-    final int? durationUs = segments.isNotEmpty
-        ? segments.last.relativeStartTimeUs ?? 0 + segments.last.durationUs!
-        : null;
+    final int? durationUs =
+        segments.isNotEmpty ? segments.last.relativeStartTimeUs ?? 0 + segments.last.durationUs! : null;
 
     if (startOffsetUs != null && startOffsetUs < 0) {
       startOffsetUs = durationUs ?? 0 + startOffsetUs;
