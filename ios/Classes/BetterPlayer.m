@@ -763,9 +763,9 @@ NS_INLINE UIViewController *rootViewController() API_AVAILABLE(ios(16.0)) {
 /// so the channel is going to die or is already dead.
 - (void)disposeSansEventChannel {
     @try{
-//        if (@available(iOS 16.0, *)) {
-//            [_playerLayer removeFromSuperlayer];
-//        }
+        if (@available(iOS 16.0, *)) {
+            [__playerLayer removeFromSuperlayer];
+        }
         [self clear];
     }
     @catch(NSException *exception) {
