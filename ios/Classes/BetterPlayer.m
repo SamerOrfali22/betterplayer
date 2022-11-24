@@ -134,6 +134,20 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
     return degrees;
 };
 
+
+NS_INLINE UIViewController *rootViewController() API_AVAILABLE(ios(16.0)) {
+  for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+    if ([scene isKindOfClass:UIWindowScene.class]) {
+      for (UIWindow *window in ((UIWindowScene *)scene).windows) {
+        if (window.isKeyWindow) {
+          return window.rootViewController;
+        }
+      }
+    }
+  }
+  return nil;
+}
+
 - (AVMutableVideoComposition*)getVideoCompositionWithTransform:(CGAffineTransform)transform
                                                      withAsset:(AVAsset*)asset
                                                 withVideoTrack:(AVAssetTrack*)videoTrack {
@@ -266,7 +280,10 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
             }
         }
     };
-
+    if (@available(iOS 16.0, *)) {
+        self._playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
+        [rootViewController().view.layer addSublayer:self._playerLayer];
+      }
     [asset loadValuesAsynchronouslyForKeys:@[ @"tracks" ] completionHandler:assetCompletionHandler];
     [self addObservers:item];
 }
@@ -746,6 +763,9 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 /// so the channel is going to die or is already dead.
 - (void)disposeSansEventChannel {
     @try{
+        if (@available(iOS 16.0, *)) {
+            [_playerLayer removeFromSuperlayer];
+        }
         [self clear];
     }
     @catch(NSException *exception) {
