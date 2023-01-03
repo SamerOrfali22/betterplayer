@@ -321,25 +321,23 @@ internal class BetterPlayer(
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            refreshHandler = Handler(Looper.getMainLooper())
-            refreshRunnable = Runnable {
-                val playbackState: PlaybackStateCompat = if (exoPlayer?.isPlaying == true) {
-                    PlaybackStateCompat.Builder()
-                        .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
-                        .setState(PlaybackStateCompat.STATE_PLAYING, position, 1.0f)
-                        .build()
-                } else {
-                    PlaybackStateCompat.Builder()
-                        .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
-                        .setState(PlaybackStateCompat.STATE_PAUSED, position, 1.0f)
-                        .build()
-                }
-                mediaSession?.setPlaybackState(playbackState)
-                refreshHandler?.postDelayed(refreshRunnable!!, 1000)
+        refreshHandler = Handler(Looper.getMainLooper())
+        refreshRunnable = Runnable {
+            val playbackState: PlaybackStateCompat = if (exoPlayer?.isPlaying == true) {
+                PlaybackStateCompat.Builder()
+                    .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                    .setState(PlaybackStateCompat.STATE_PLAYING, position, 1.0f)
+                    .build()
+            } else {
+                PlaybackStateCompat.Builder()
+                    .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                    .setState(PlaybackStateCompat.STATE_PAUSED, position, 1.0f)
+                    .build()
             }
-            refreshHandler?.postDelayed(refreshRunnable!!, 0)
+            mediaSession?.setPlaybackState(playbackState)
+            refreshHandler?.postDelayed(refreshRunnable!!, 1000)
         }
+        refreshHandler?.postDelayed(refreshRunnable!!, 0)
         exoPlayerEventListener = object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 mediaSession?.setMetadata(
@@ -377,11 +375,10 @@ internal class BetterPlayer(
         cacheKey: String?,
         context: Context
     ): MediaSource {
-        val type: Int
-        if (formatHint == null) {
-            type = Util.inferContentType(uri)
+        val type: Int = if (formatHint == null) {
+            Util.inferContentType(uri)
         } else {
-            type = when (formatHint) {
+            when (formatHint) {
                 FORMAT_SS -> C.CONTENT_TYPE_SS
                 FORMAT_DASH -> C.CONTENT_TYPE_DASH
                 FORMAT_HLS -> C.CONTENT_TYPE_HLS
@@ -514,17 +511,10 @@ internal class BetterPlayer(
     @Suppress("DEPRECATION")
     private fun setAudioAttributes(exoPlayer: ExoPlayer?, mixWithOthers: Boolean) {
         val audioComponent = exoPlayer?.audioComponent ?: return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            audioComponent.setAudioAttributes(
-                AudioAttributes.Builder().setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(),
-                !mixWithOthers
-            )
-        } else {
-            audioComponent.setAudioAttributes(
-                AudioAttributes.Builder().setContentType(C.AUDIO_CONTENT_TYPE_MUSIC).build(),
-                !mixWithOthers
-            )
-        }
+        audioComponent.setAudioAttributes(
+            AudioAttributes.Builder().setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(),
+            !mixWithOthers
+        )
     }
 
     fun play() {
@@ -776,8 +766,8 @@ internal class BetterPlayer(
         //Clear cache without accessing BetterPlayerCache.
         fun clearCache(context: Context?, result: MethodChannel.Result) {
             try {
-                context?.let { context ->
-                    val file = File(context.cacheDir, "betterPlayerCache")
+                context?.let { cn ->
+                    val file = File(cn.cacheDir, "betterPlayerCache")
                     deleteDirectory(file)
                 }
                 result.success(null)
