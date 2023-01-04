@@ -256,15 +256,7 @@ class BetterPlayerController {
     ///Process data source
     await _setupDataSource(betterPlayerDataSource);
     _betterPlayerAsmsTracks.sort((a, b) => a.height!.compareTo(b.height!));
-    for (int i = 0; i < _betterPlayerAsmsTracks.length; i++) {
-      var element = _betterPlayerAsmsTracks[i];
-      print('track $i { ${element.height} x ${element.width}  =  ${element.bitrate}');
-    }
-    if (_betterPlayerAsmsTracks.length > 1) {
-      setTrack(_betterPlayerAsmsTracks.elementAt(1));
-    } else {
-      setTrack(BetterPlayerAsmsTrack.defaultTrack());
-    }
+    setTrack(BetterPlayerAsmsTrack.defaultTrack());
   }
 
   ///Configure subtitles based on subtitles source.
