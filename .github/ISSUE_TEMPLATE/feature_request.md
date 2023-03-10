@@ -1,9 +1,6 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: "[FEATURE]"
-labels: enhancement, new issue
-assignees: jhomlala
+name: Feature request about: Suggest an idea for this project title: "[FEATURE]"
+labels: enhancement, new issue assignees: jhomlala
 
 ---
 
